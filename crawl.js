@@ -1,20 +1,30 @@
+const { JSDOM } = require('jsdom')
+
 function normalizeURL(url) {
-  let baseUrl
+  let normalizedUrl
+  
   if (url.startsWith('https://') || url.startsWith('http://')){
     const myUrl = new URL(url)
-    baseUrl = `${myUrl.hostname}${myUrl.pathname}`
+    normalizedUrl = `${myUrl.hostname}${myUrl.pathname}`
   } else {
-    baseUrl = url
+    normalizedUrl = url
   }
 
   if (baseUrl.endsWith('/')) {
-    baseUrl = baseUrl.slice(0, baseUrl.length - 1)
+    normalizedUrl = baseUrl.slice(0, normalizedUrl.length - 1)
   }
-  return baseUrl
+  return normalizedUrl
 }
 
-function getURLsFromHTML(htmlString) {
-  return
+function getURLsFromHTML(htmlString, baseUrl) {
+  const urlArr = []
+  const dom = new JSDOM(htmlString)
+  for (const element of dom.window.document.querySelectorAll('a')) {
+    if (element.href) {
+      urlArr.push(element.href)
+    }
+  }
+  return urlArr
 }
 
 module.exports = {
