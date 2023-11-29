@@ -10,8 +10,8 @@ function normalizeURL(url) {
     normalizedUrl = url
   }
 
-  if (baseUrl.endsWith('/')) {
-    normalizedUrl = baseUrl.slice(0, normalizedUrl.length - 1)
+  if (normalizedUrl.endsWith('/')) {
+    normalizedUrl = normalizedUrl.slice(0, normalizedUrl.length - 1)
   }
   return normalizedUrl
 }
@@ -19,12 +19,12 @@ function normalizeURL(url) {
 function getURLsFromHTML(htmlString, baseUrl) {
   const urlArr = []
   const dom = new JSDOM(htmlString)
-  for (const element of dom.window.document.querySelectorAll('a')) {
+  for (let element of dom.window.document.querySelectorAll('a')) {
     if (element.href) {
       urlArr.push(element.href)
     }
   }
-  return urlArr
+  return urlArr.map((url) => !url.startsWith('https://') ? baseUrl + url : url)
 }
 
 module.exports = {

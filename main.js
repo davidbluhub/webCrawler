@@ -1,6 +1,15 @@
-const { normalizeURL, getURLsFromHTML } = require('./crawl.js')
+const { argv } = require('node:process')
 
-const htmlString = "<html><body><a href='https://blog.boot.dev/path'><a></body></html>"
+function main() {
+  try {
+    if (!(argv.length === 3)) {
+      throw new Error('Crawler must have exactly one argument')
+    }
+    console.log(`Crawler is starting at ${argv[2]}`) 
+  } catch (err) {
+    console.log(err.message)
+  }
+  
+}
 
-console.log(getURLsFromHTML(htmlString, 'something'))
-console.log('Hello, World!')
+main()
